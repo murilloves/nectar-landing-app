@@ -971,6 +971,27 @@
   let section2;
   let section3;
 
+  scrollFadeAnimation = () => {
+    if (document.body.scrollTop > section2.scrollHeight) {
+      section2.classList.add('scrolled');
+    } else if (document.body.scrollTop < section2.scrollHeight) {
+      section2.classList.remove('scrolled');
+    }
+
+    hiddenSections.forEach((el) => {
+      if (el.offsetParent) {
+        const elHeigh = el.offsetParent.offsetTop + el.offsetTop;
+        const screenOffset = screen.width > 1000 ? screen.height * 0.85 : screen.height * 2;
+
+        if (document.body.scrollTop > elHeigh - screenOffset) {
+          el.classList.add('scrolled');
+        // } else if (document.body.scrollTop < elHeigh - screenOffset) {
+        //   el.classList.remove('scrolled');
+        }
+      }
+    })
+  }
+
   (
     this.changeSubsectionFeatures(0, false),
     this.getMousePosition(),
@@ -983,25 +1004,7 @@
     hiddenSections = document.querySelectorAll(".reveal-on-scroll"),
 
     window.onscroll = function() {
-      console.log('hiddenSections', hiddenSections);
-      if (document.body.scrollTop > section2.scrollHeight) {
-        section2.classList.add('scrolled');
-      } else if (document.body.scrollTop < section2.scrollHeight) {
-        section2.classList.remove('scrolled');
-      }
-
-      hiddenSections.forEach((el) => {
-        if (el.offsetParent) {
-          const elHeigh = el.offsetParent.offsetTop + el.offsetTop;
-          const screenOffset = screen.height * 0.85;
-
-          if (document.body.scrollTop > elHeigh - screenOffset) {
-            el.classList.add('scrolled');
-          // } else if (document.body.scrollTop < elHeigh - screenOffset) {
-          //   el.classList.remove('scrolled');
-          }
-        }
-      })
+      this.scrollFadeAnimation();
     }
 
   )();
